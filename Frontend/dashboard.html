@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGE MARKET</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .header-logo img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+    
+    .header-logo h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="header-logo">
+      <img src="/IMG/logosge.png" alt="Logo SGE" />
+      <h1></h1>
+    </div>
+    <button id="logoutBtn">Sair</button>
+  </header>
+
+  <main class="container">
+    <section class="product">
+      <img src="/IMG/iphone.webp" alt="iPhone" />
+      <h2>iPhone</h2>
+      <p>Smartphone Apple com tecnologia avançada.</p>
+      <button>Comprar</button>
+    </section>
+
+    <section class="product">
+      <img src="/IMG/galaxy25.webp" alt="Samsung Galaxy" />
+      <h2>Samsung Galaxy</h2>
+      <p>Smartphone Samsung com câmera de alta qualidade.</p>
+      <button>Comprar</button>
+    </section>
+
+    
+  </main>
+
+  <script>
+    // Verifica se há token no localStorage
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/';
+    }
+
+    // Logout simples - apenas remove o token e redireciona
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>

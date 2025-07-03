@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Autenticação</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/index.css" />
 </head>
 <body>
     <div class="container">
@@ -27,13 +27,10 @@
         </form>
 
         <div id="response" class="response"></div>
-        
-        <!-- Botões de teste -->
-        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ccc;">
-            <h3>🧪 Testes da API</h3>
-            <button onclick="testAPIConnection()" style="margin-right: 10px;">Testar Conexão</button>
-            <button onclick="testEndpoint('/auth/register', 'POST', {name: 'Teste', email: 'teste@teste.com', password: '123456', confirmPassword: '123456'})" style="margin-right: 10px;">Testar Registro</button>
-            <button onclick="testEndpoint('/auth/login', 'POST', {email: 'teste@teste.com', password: '123456'})">Testar Login</button>
+        <div id="user-info" class="user-info hidden">
+            <h3>Informações do Usuário</h3>
+            <div id="user-details"></div>
+            <button onclick="logout()" class="logout-btn">Sair</button>
         </div>
     </div>
 

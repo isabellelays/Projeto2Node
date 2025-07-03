@@ -18,7 +18,6 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware para cookies e sessions
 app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_SECRET || 'sua_chave_secreta_sessions',
@@ -137,11 +136,11 @@ app.post('/auth/register', async (req, res) => {
 
         await user.save();
         
-        // Criar sessão após registro bem-sucedido
+       
         req.session.userId = user._id;
         req.session.userEmail = user.email;
 
-        // Gerar JWT (mantendo compatibilidade)
+        // Gerar JWT 
         const secret = process.env.JWT_SECRET;
         const token = jwt.sign(
             { id: user._id },
@@ -216,20 +215,20 @@ const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/projeto2n
 
 mongoose.connect(mongoURI)
     .then(() => {
-        console.log('✅ Conectado ao MongoDB com sucesso!');
-        console.log(`📊 Database: ${mongoose.connection.name}`);
-        console.log(`🔗 Host: ${mongoose.connection.host}`);
-        console.log(`🌐 Atlas: ${mongoURI.includes('mongodb.net') ? 'Sim' : 'Não'}`);
-        console.log(`🍪 Sessions habilitadas`);
+        console.log(' Conectado ao MongoDB com sucesso!');
+        console.log(`Database: ${mongoose.connection.name}`);
+        console.log(`Host: ${mongoose.connection.host}`);
+        console.log(`Atlas: ${mongoURI.includes('mongodb.net') ? 'Sim' : 'Não'}`);
+        console.log(`Sessions habilitadas`);
 
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
-            console.log(`🚀 Servidor rodando na porta ${PORT}`);
-            console.log(`🌐 Acesse: http://localhost:${PORT}`);
+            console.log(` Servidor rodando na porta ${PORT}`);
+            console.log(`Acesse: http://localhost:${PORT}`);
         });
     })
     .catch(err => {
-        console.error('❌ Erro ao conectar ao MongoDB:', err.message);
-        console.log('💡 Verifique se a string de conexão do Atlas está correta no arquivo .env');
+        console.error('Erro ao conectar ao MongoDB:', err.message);
+        console.log('Verifique se a string de conexão do Atlas está correta no arquivo .env');
         process.exit(1);
     });
