@@ -37,14 +37,20 @@ app.use(session({
 
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true // Importante para cookies
+    credentials: true 
 }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'Frontend')));
+app.use('/IMG', express.static(path.join(__dirname, 'IMG')));
 
 // Rota principal - serve o HTML
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'Frontend', 'index.html'));
+});
+
+// Rota para o dashboard
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'dashboard.html'));
 });
 
 // Rota para testar conexão com o banco
@@ -64,7 +70,7 @@ app.get('/status', (req, res) => {
     });
 });
 
-// Rota protegida - requer autenticação
+// Rota protegida
 app.get('/user/profile', checkToken, (req, res) => {
     res.json({
         msg: 'Rota protegida acessada com sucesso!',
@@ -73,7 +79,7 @@ app.get('/user/profile', checkToken, (req, res) => {
     });
 });
 
-// Rota para verificar sessão
+
 app.get('/session/check', (req, res) => {
     if (req.session.userId) {
         res.json({
@@ -100,9 +106,9 @@ app.post('/session/logout', (req, res) => {
     });
 });
 
-// ROTAS DE AUTENTICAÇÃO
 
-// Registro
+
+
 app.post('/auth/register', async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
@@ -134,10 +140,24 @@ app.post('/auth/register', async (req, res) => {
         // Criar sessão após registro bem-sucedido
         req.session.userId = user._id;
         req.session.userEmail = user.email;
+
+        // Gerar JWT (mantendo compatibilidade)
+        const secret = process.env.JWT_SECRET;
+        const token = jwt.sign(
+            { id: user._id },
+            secret,
+            { expiresIn: '1d' }
+        );
         
         res.status(201).json({ 
             msg: "Usuário criado com sucesso!",
-            sessionId: req.sessionID
+            token,
+            sessionId: req.sessionID,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
         });
     } catch (error) {
         console.error(error);
